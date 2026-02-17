@@ -6,17 +6,17 @@ import { createComment, getPostComments } from '../../api/comments';
 import { deleteComment } from '../../api/comments';
 
 type CommentsState = {
-  comments: Comment[] | null;
-  loading: boolean;
-  submitting: boolean;
-  error: string | null;
+  items: Comment[] | null;
+  loaded: boolean;
+  submitted: boolean;
+  hasError: boolean;
 };
 
 const initialState: CommentsState = {
-  comments: null,
-  loading: false,
-  submitting: false,
-  error: null,
+  items: null,
+  loaded: false,
+  submitted: true,
+  hasError: false,
 };
 
 export const init = createAsyncThunk('comments/fetch', (post: Post) => {
@@ -48,45 +48,45 @@ const commentsSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(init.pending, state => {
-        state.loading = true;
-        state.comments = null;
-        state.error = null;
+        state.loaded = false;
+        state.items = null;
+        state.hasError = false;
       })
       .addCase(init.fulfilled, (state, action: PayloadAction<Comment[]>) => {
-        state.loading = false;
-        state.comments = action.payload;
+        state.loaded = true;
+        state.items = action.payload;
       })
       .addCase(init.rejected, state => {
-        state.loading = false;
-        state.error = 'Comments not loaded(';
+        state.loaded = true;
+        state.hasError = true;
       })
       .addCase(addComment.pending, state => {
-        state.submitting = true;
-        state.error = null;
+        state.submitted = false;
+        state.hasError = false;
       })
       .addCase(
         addComment.fulfilled,
         (state, action: PayloadAction<Comment>) => {
-          state.submitting = false;
-          state.comments?.push(action.payload);
+          state.submitted = true;
+          state.items?.push(action.payload);
         },
       )
       .addCase(addComment.rejected, state => {
-        state.submitting = false;
-        state.error = 'Unable to add comment';
+        state.submitted = true;
+        state.hasError = true;
       })
       .addCase(
         removeComment.fulfilled,
         (state, action: PayloadAction<number>) => {
-          if (state.comments) {
-            state.comments = state.comments.filter(
+          if (state.items) {
+            state.items = state.items.filter(
               comment => comment.id !== action.payload,
             );
           }
         },
       )
       .addCase(removeComment.rejected, state => {
-        state.error = 'Unable to delete comment';
+        state.hasError = true;
       });
   },
 });

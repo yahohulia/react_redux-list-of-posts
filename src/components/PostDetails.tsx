@@ -7,7 +7,11 @@ import * as commentsAction from '../features/comments/commentsSlice';
 export const PostDetails: React.FC = () => {
   const dispatch = useAppDispatch();
   const { selectedPost: post } = useAppSelector(state => state.selectedPost);
-  const { comments, loading, error } = useAppSelector(state => state.comments);
+  const {
+    items: comments,
+    loaded,
+    hasError,
+  } = useAppSelector(state => state.comments);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -29,21 +33,21 @@ export const PostDetails: React.FC = () => {
       </div>
 
       <div className="block">
-        {loading && <Loader />}
+        {!loaded && <Loader />}
 
-        {!loading && error && (
+        {loaded && hasError && (
           <div className="notification is-danger" data-cy="CommentsError">
             Something went wrong
           </div>
         )}
 
-        {!loading && !error && comments?.length === 0 && (
+        {loaded && !hasError && comments?.length === 0 && (
           <p className="title is-4" data-cy="NoCommentsMessage">
             No comments yet
           </p>
         )}
 
-        {!loading && !error && comments && comments.length > 0 && (
+        {loaded && !hasError && comments && comments.length > 0 && (
           <>
             <p className="title is-4">Comments:</p>
 
@@ -79,7 +83,7 @@ export const PostDetails: React.FC = () => {
           </>
         )}
 
-        {!loading && !error && !visible && (
+        {loaded && !hasError && !visible && (
           <button
             data-cy="WriteCommentButton"
             type="button"
@@ -90,7 +94,7 @@ export const PostDetails: React.FC = () => {
           </button>
         )}
 
-        {!loading && !error && visible && <NewCommentForm />}
+        {loaded && !hasError && visible && <NewCommentForm />}
       </div>
     </div>
   );

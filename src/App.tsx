@@ -17,9 +17,9 @@ export const App: React.FC = () => {
   const { user } = useAppSelector(state => state.user);
   const { selectedPost } = useAppSelector(state => state.selectedPost);
   const {
-    posts,
-    loading: postsLoading,
-    error: postsError,
+    items: posts,
+    loaded: postsLoaded,
+    hasError: postsHasError,
   } = useAppSelector(state => state.posts);
 
   useEffect(() => {
@@ -42,8 +42,8 @@ export const App: React.FC = () => {
 
               <div className="block" data-cy="MainContent">
                 {!user && <p data-cy="NoSelectedUser">No user selected</p>}
-                {user && postsLoading && <Loader />}
-                {user && !postsLoading && postsError && (
+                {user && !postsLoaded && <Loader />}
+                {user && postsLoaded && postsHasError && (
                   <div
                     className="notification is-danger"
                     data-cy="PostsLoadingError"
@@ -52,8 +52,8 @@ export const App: React.FC = () => {
                   </div>
                 )}
                 {user &&
-                  !postsLoading &&
-                  !postsError &&
+                  postsLoaded &&
+                  !postsHasError &&
                   posts?.length === 0 && (
                     <div
                       className="notification is-warning"
@@ -64,8 +64,8 @@ export const App: React.FC = () => {
                   )}
 
                 {user &&
-                  !postsLoading &&
-                  !postsError &&
+                  postsLoaded &&
+                  !postsHasError &&
                   posts &&
                   posts?.length > 0 && <PostsList />}
               </div>

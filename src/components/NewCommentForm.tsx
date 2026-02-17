@@ -7,7 +7,7 @@ import * as commentsAction from '../features/comments/commentsSlice';
 export const NewCommentForm: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { post } = useAppSelector(state => state.posts);
+  const { selectedPost: post } = useAppSelector(state => state.selectedPost);
   const { submitting } = useAppSelector(state => state.comments);
 
   const [errors, setErrors] = useState({

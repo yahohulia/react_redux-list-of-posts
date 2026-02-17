@@ -6,7 +6,7 @@ import * as commentsAction from '../features/comments/commentsSlice';
 
 export const PostDetails: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { post } = useAppSelector(state => state.posts);
+  const { selectedPost: post } = useAppSelector(state => state.selectedPost);
   const { comments, loading, error } = useAppSelector(state => state.comments);
   const [visible, setVisible] = useState(false);
 

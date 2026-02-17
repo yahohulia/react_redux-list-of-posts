@@ -15,8 +15,8 @@ import * as postActions from './features/posts/postsSlice';
 export const App: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user } = useAppSelector(state => state.user);
+  const { selectedPost } = useAppSelector(state => state.selectedPost);
   const {
-    post: selectedPost,
     posts,
     loading: postsLoading,
     error: postsError,
@@ -62,9 +62,12 @@ export const App: React.FC = () => {
                       No posts yet
                     </div>
                   )}
-                {user && !postsLoading && !postsError && posts?.length > 0 && (
-                  <PostsList />
-                )}
+
+                {user &&
+                  !postsLoading &&
+                  !postsError &&
+                  posts &&
+                  posts?.length > 0 && <PostsList />}
               </div>
             </div>
           </div>
@@ -82,7 +85,7 @@ export const App: React.FC = () => {
             )}
           >
             <div className="tile is-child box is-success ">
-              {selectedPost && <PostDetails post={selectedPost} />}
+              {selectedPost && <PostDetails />}
             </div>
           </div>
         </div>

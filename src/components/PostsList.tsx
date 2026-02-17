@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/control-has-associated-label */
 import classNames from 'classnames';
 import React, { useEffect } from 'react';
-import * as postActions from '../features/posts/postsSlice';
+import * as postActions from '../features/selectedPost/selectedPostSlice';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
 
 export const PostsList: React.FC = ({}) => {
   const dispatch = useAppDispatch();
-  const { post: selectedPost, posts } = useAppSelector(state => state.posts);
+  const { posts } = useAppSelector(state => state.posts);
+  const { selectedPost } = useAppSelector(state => state.selectedPost);
   const { user } = useAppSelector(state => state.user);
 
   useEffect(() => {

@@ -5,14 +5,12 @@ import { getUserPosts } from '../../api/posts';
 import { User } from '../../types/User';
 
 type PostsState = {
-  post: Post | null;
   posts: Post[] | null;
   loading: boolean;
   error: string | null;
 };
 
 const initialState: PostsState = {
-  post: null,
   posts: null,
   loading: false,
   error: null,
@@ -25,11 +23,7 @@ export const init = createAsyncThunk('posts/fetch', (user: User) => {
 const postSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {
-    setPost: (state, action: PayloadAction<Post | null>) => {
-      state.post = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: builder => {
     builder
       .addCase(init.pending, state => {
@@ -49,4 +43,3 @@ const postSlice = createSlice({
 });
 
 export default postSlice.reducer;
-export const { setPost } = postSlice.actions;
